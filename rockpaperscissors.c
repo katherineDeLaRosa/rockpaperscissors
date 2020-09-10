@@ -36,6 +36,7 @@ const char PALETTE[32] = {
   0x0d,0x2d,0x3a,0x0,	// sprite palette 2
   0x0d,0x27,0x2a	// sprite palette 3
 };
+int comp;
 
 // setup PPU and tables
 void setup_graphics() {
@@ -50,10 +51,34 @@ void main(void)
   setup_graphics();
   // draw message  
   vram_adr(NTADR_A(2,2));
-  vram_write("HELLO, WORLD!", 12);
+  vram_write("Rock, Paper, Scissors!", 22);
+   vram_adr(NTADR_A(98,3));
+  vram_write("choose your play!", 17);
+  vram_adr(NTADR_A(98,4));
+  vram_write("1: Rock ", 8);
+  vram_write("2: Paper ", 9);
+  vram_write("3: scissors", 11);
+  comp = (rand()%3)+1;
+
+  if (comp ==1){
+     vram_adr(NTADR_A(500,5));
+  vram_write("1: Rock ", 8);
+   };
+  if (comp == 2){
+     vram_adr(NTADR_A(500,5));
+  vram_write("2: Paper ", 9);
+  };
+  if (comp ==3){
+     vram_adr(NTADR_A(500,5));
+   vram_write("3: scissors", 11);
+  };
+  
   // enable rendering
   ppu_on_all();
   // infinite loop
   while(1) {
+  
   }
+  
+  
 }
