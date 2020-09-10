@@ -4,6 +4,7 @@
 
 #include <stdlib.h>
 #include <string.h>
+#include <stdio.h>
 
 // include NESLIB header
 #include "neslib.h"
@@ -37,6 +38,8 @@ const char PALETTE[32] = {
   0x0d,0x27,0x2a	// sprite palette 3
 };
 int comp;
+char pad;
+int i;
 
 // setup PPU and tables
 void setup_graphics() {
@@ -52,31 +55,52 @@ void main(void)
   // draw message  
   vram_adr(NTADR_A(2,2));
   vram_write("Rock, Paper, Scissors!", 22);
-   vram_adr(NTADR_A(98,3));
+  vram_adr(NTADR_A(2,3));
   vram_write("choose your play!", 17);
-  vram_adr(NTADR_A(98,4));
-  vram_write("1: Rock ", 8);
-  vram_write("2: Paper ", 9);
-  vram_write("3: scissors", 11);
-  comp = (rand()%3)+1;
+  vram_adr(NTADR_A(2,5));
+  vram_write("Up: Rock",8);
+  vram_adr(NTADR_A(2,6));
+  vram_write("Left: Paper",11);
+  vram_adr(NTADR_A(2,7));
+  vram_write("Right: Scissors",15);
+  
+  comp = rand()%(3-1)+1;
+  
+  
 
   if (comp ==1){
-     vram_adr(NTADR_A(500,5));
-  vram_write("1: Rock ", 8);
-   };
+     vram_adr(NTADR_A(450,5));
+     vram_write("Cpu chose Rock. ", 15);
+  };
   if (comp == 2){
-     vram_adr(NTADR_A(500,5));
-  vram_write("2: Paper ", 9);
+     vram_adr(NTADR_A(450,5));
+     vram_write("Cpu chose Paper. ", 16);
   };
   if (comp ==3){
-     vram_adr(NTADR_A(500,5));
-   vram_write("3: scissors", 11);
+     vram_adr(NTADR_A(450,5));
+     vram_write("Cpu chose Scissors.", 20);
   };
   
   // enable rendering
   ppu_on_all();
   // infinite loop
   while(1) {
+    i=0;
+    pad = pad_trigger(i);
+    
+      if(pad & PAD_LEFT){        
+      	vram_adr(NTADR_A(2,9));
+      	vram_write("You choose Paper!!   ",21);     
+      }
+      else if(pad & PAD_RIGHT){
+      	vram_adr(NTADR_A(2,9));
+      	vram_write("You choose Scissors!!",21);        
+      }
+      else if(pad & PAD_UP){
+        vram_adr(NTADR_A(2,9));
+      	vram_write("You choose Rock!!    ",21); 
+      }    
+    
   
   }
   
