@@ -60,7 +60,7 @@ void setup_graphics() {
 void title_screen() 
 {
 
-  vram_adr(NTADR_A(3,2));	
+  vram_adr(NTADR_A(5,2));	
   vram_write("Rock, Paper, Scissors!", 22);
   vram_adr(NTADR_A(6,22));	
   vram_write("Press start to begin", 20);
@@ -87,7 +87,7 @@ void guess()
   setup_graphics();
    
    vram_adr(NTADR_A(2,2));
-  vram_write("Rock, Paper, Scissors!", 23);
+  vram_write("Rock, Paper, Scissors!   ", 25);
   vram_adr(NTADR_A(4,3));
   vram_write("choose your play!", 17);
   vram_adr(NTADR_A(2,5));
