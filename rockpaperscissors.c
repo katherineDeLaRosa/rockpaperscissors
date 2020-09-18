@@ -8,6 +8,9 @@
 
 // include NESLIB header
 #include "neslib.h"
+#include "neslib.h"
+#include <stdio.h> 
+#include <stdlib.h>
 
 // include CC65 NES Header (PPU)
 #include <nes.h>
@@ -24,6 +27,11 @@
 //#link "vrambuf.c"
 
 /*{pal:"nes",layout:"nes"}*/
+// setup PPU and tables
+
+
+
+
 const char PALETTE[32] = { 
   0x03,			// screen color
 
@@ -41,7 +49,6 @@ int comp;
 char pad;
 int i;
 
-// setup PPU and tables
 void setup_graphics() {
   // clear sprites
   oam_clear();
@@ -49,13 +56,37 @@ void setup_graphics() {
   pal_all(PALETTE);
 }
 
-void main(void)
+
+void title_screen() 
 {
-  setup_graphics();
-  // draw message  
-  vram_adr(NTADR_A(2,2));
+
+  vram_adr(NTADR_A(3,2));	
   vram_write("Rock, Paper, Scissors!", 22);
-  vram_adr(NTADR_A(2,3));
+  
+  
+  
+ppu_on_all();
+
+  
+ while(1)
+  {
+    
+    if(pad_trigger(0)&PAD_START) break;
+    setup_graphics();
+    
+  }
+  
+ppu_off();
+}
+
+void guess()
+{
+ 
+  setup_graphics();
+   
+   vram_adr(NTADR_A(2,2));
+  vram_write("Rock, Paper, Scissors!", 23);
+  vram_adr(NTADR_A(4,3));
   vram_write("choose your play!", 17);
   vram_adr(NTADR_A(2,5));
   vram_write("Up: Rock",8);
@@ -63,6 +94,7 @@ void main(void)
   vram_write("Left: Paper",11);
   vram_adr(NTADR_A(2,7));
   vram_write("Right: Scissors",15);
+  
   
   comp = rand()%(3-1)+1;
   
@@ -106,3 +138,40 @@ void main(void)
   
   
 }
+
+
+void game()
+{
+ 
+
+  char str[] =""; //score to char string
+  ppu_off();
+  
+
+  ppu_on_all();
+  
+  guess();
+  
+}
+
+
+
+
+
+void main(void) {
+   setup_graphics();
+  
+  title_screen();
+ 
+  while (1) 
+  {  
+    
+     guess();
+    
+    
+  } 
+     
+}
+
+
+
