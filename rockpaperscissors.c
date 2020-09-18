@@ -62,6 +62,8 @@ void title_screen()
 
   vram_adr(NTADR_A(3,2));	
   vram_write("Rock, Paper, Scissors!", 22);
+  vram_adr(NTADR_A(6,22));	
+  vram_write("Press start to begin", 20);
   
   
   
@@ -94,6 +96,8 @@ void guess()
   vram_write("Left: Paper",11);
   vram_adr(NTADR_A(2,7));
   vram_write("Right: Scissors",15);
+  vram_adr(NTADR_A(6,22));	
+  vram_write("                         ", 20);
   
   
   comp = rand()%(3-1)+1;
