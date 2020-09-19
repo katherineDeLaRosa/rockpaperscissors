@@ -206,12 +206,12 @@ void guess()
 
   if (comp ==1){
      vram_adr(NTADR_A(450,5));
-     vram_write("Cpu chose Rock. ", 15);
+     vram_write("Cpu chose Rock.    ", 20);
      CpuGuess ='r';
   };
   if (comp == 2){
      vram_adr(NTADR_A(450,5));
-     vram_write("Cpu chose Paper. ", 16);
+     vram_write("Cpu chose Paper.   ", 20);
      CpuGuess = 'p';
   };
   if (comp ==3){
