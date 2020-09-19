@@ -28,7 +28,8 @@
 #include "vrambuf.h"
 //#link "vrambuf.c"
 
-/*{pal:"nes",layout:"nes"}*/
+/*{pal:"nes",la
+out:"nes"}*/
 // setup PPU and tables
 
 
@@ -53,8 +54,9 @@ int i;
 int index;
 char CpuGuess;
 char UserGuess;
-time_t t;
-int y = 0;
+int wins;
+
+
 
 void setup_graphics() {
   // clear sprites
@@ -94,18 +96,19 @@ void check(char user, char cpu){ // delete to fix
       ppu_off();
       vram_adr(NTADR_A(8,23));	
       vram_write("You won !!!!      ", 18);
+      //wins++;for the rounds 
       ppu_on_all();      
     }
     else if(cpu == 'r'){// if cpu is rock you tied
       ppu_off();
       vram_adr(NTADR_A(8,23));	
-      vram_write("You tied !!!!     ", 18);
+      vram_write("You tied !!!!     ", 18);      
       ppu_on_all();         
     }
     else{ // if cpu is paper you loose
       ppu_off();
       vram_adr(NTADR_A(8,23));
-      vram_write("You lost.          ",18);
+      vram_write("You lost.          ",18);      
       ppu_on_all();
     }
   }
@@ -114,6 +117,7 @@ void check(char user, char cpu){ // delete to fix
       ppu_off();
       vram_adr(NTADR_A(8,23));	
       vram_write("You won !!!!      ", 18);
+      //wins++; for the rounds 
       ppu_on_all();      
     }
     else if(cpu == 'p'){ // if cpu is paper you tied
@@ -134,6 +138,7 @@ void check(char user, char cpu){ // delete to fix
       ppu_off();
       vram_adr(NTADR_A(8,23));	
       vram_write("You won !!!!      ", 18);
+      //wins++; for the rounds
       ppu_on_all();      
     }
     else if(cpu == 's'){ // if cpu is scissors you tied
@@ -149,12 +154,27 @@ void check(char user, char cpu){ // delete to fix
       ppu_on_all();
     }
     
+  }  
+}// check
+
+void wonLost(int win){
+  if(win >= 3){
+    ppu_off();
+    vram_adr(NTADR_A(8,19));
+    vram_write("You lost to the cpu :/.  ",26);
+    ppu_on_all();
+    
+  }
+  else{
+    ppu_off();
+    vram_adr(NTADR_A(8,19));
+    vram_write("You won against the cpu!!!",26);
+    ppu_on_all();
+    
   }
   
   
-  
-  
-}// check
+}
 
 void guess()
 {   
@@ -172,7 +192,8 @@ void guess()
   vram_adr(NTADR_A(6,22));	
   vram_write("                         ", 20); 
   ppu_on_all();
-  comp = (rand()%(3))+1;
+  
+  comp = (rand()%(3-1))+1;
   comp = (rand()%(3))+1;
   
   while(1) {    
@@ -230,20 +251,20 @@ void guess()
   
 }//guess
 
-int loop;
+int rounds;
 void main(void) {
   setup_graphics();  
   title_screen();
-  loop =0;
+  rounds =0;
+  wins = 0;
  
-  while (1) 
-  {      
-    
+  while (rounds < 5) 
+  {          
      guess();  
-     
-         
+     //rounds++;// for the rounds
   } 
-     
+  //wonLost(wins);  // for the rounds
+    
 }
 
 
