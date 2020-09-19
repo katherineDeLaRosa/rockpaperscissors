@@ -1,6 +1,8 @@
 
 #include <stdlib.h>
 #include <string.h>
+#include<time.h>
+
 
 #include <stdlib.h>
 #include <string.h>
@@ -49,8 +51,9 @@ int comp;
 char pad;
 int i;
 int index;
-int CpuGuess;
-int UserGuess;
+char CpuGuess;
+char UserGuess;
+time_t t;
 
 
 void setup_graphics() {
@@ -69,6 +72,7 @@ void title_screen()
   vram_adr(NTADR_A(6,22));	
   vram_write("Press start to begin", 20);  
   ppu_on_all();
+  
 
   
  while(1)
@@ -83,37 +87,78 @@ void title_screen()
 
 
 
-void check(int user, int guess){ // delete to fix
+void check(char user, char cpu){ // delete to fix
   
-  if(user > guess){
-    ppu_off();    
-    vram_adr(NTADR_A(6,22));	
-    vram_write("You won !!!!        ", 20);
-    ppu_on_all();
-    
-  }//if
-  else if(guess == user){
-    ppu_off(); 
-    vram_adr(NTADR_A(6,22));	
-    vram_write("You guys tied !!!!  ", 20);
-    ppu_on_all();
+  if(user == 'r'){ // user choice == rock
+    if(cpu == 's'){ // if cpu is scissors you win
+      ppu_off();
+      vram_adr(NTADR_A(8,23));	
+      vram_write("You won !!!!      ", 18);
+      ppu_on_all();      
+    }
+    else if(cpu == 'r'){// if cpu is rock you tied
+      ppu_off();
+      vram_adr(NTADR_A(8,23));	
+      vram_write("You tied !!!!     ", 18);
+      ppu_on_all();         
+    }
+    else{ // if cpu is paper you loose
+      ppu_off();
+      vram_adr(NTADR_A(8,23));
+      vram_write("You lost.          ",18);
+      ppu_on_all();
+    }
   }
-  else{
-    ppu_off(); 
-    vram_adr(NTADR_A(6,22));	
-    vram_write("You lost !!!!       ", 20);
-    ppu_on_all();
+  else if(user == 'p'){ // user choice == paper
+    if(cpu == 'r'){ // if cpu is rock you win
+      ppu_off();
+      vram_adr(NTADR_A(8,23));	
+      vram_write("You won !!!!      ", 18);
+      ppu_on_all();      
+    }
+    else if(cpu == 'p'){ // if cpu is paper you tied
+      ppu_off();
+      vram_adr(NTADR_A(8,23));	
+      vram_write("You tied !!!!     ", 18);
+      ppu_on_all();         
+    }
+    else{ // if cpu is scissors you loose
+      ppu_off();
+      vram_adr(NTADR_A(8,23));
+      vram_write("You lost.          ",18);
+      ppu_on_all();
+    }
+  }
+  else{ // user choice == scissors
+    if(cpu == 'p'){ // if cpu is paper you win
+      ppu_off();
+      vram_adr(NTADR_A(8,23));	
+      vram_write("You won !!!!      ", 18);
+      ppu_on_all();      
+    }
+    else if(cpu == 's'){ // if cpu is scissors you tied
+      ppu_off();
+      vram_adr(NTADR_A(8,23));	
+      vram_write("You tied !!!!     ", 18);
+      ppu_on_all();         
+    }
+    else{ // if cpu is rock you loose
+      ppu_off();
+      vram_adr(NTADR_A(8,23));
+      vram_write("You lost.          ",18);
+      ppu_on_all();
+    }
     
   }
+  
+  
   
   
 }// check
 
 void guess()
-{
- 
-  setup_graphics();
-   
+{   
+  ppu_off();
   vram_adr(NTADR_A(2,2));
   vram_write("Rock, Paper, Scissors!", 23);
   vram_adr(NTADR_A(4,3));
@@ -127,49 +172,50 @@ void guess()
   vram_adr(NTADR_A(6,22));	
   vram_write("                         ", 20); 
   
-  comp = rand()%(3-1)+1; 
+  comp = (rand()%(3-1))+1;
+  comp = (rand()%(3-1))+1;
 
   if (comp ==1){
      vram_adr(NTADR_A(450,5));
      vram_write("Cpu chose Rock. ", 15);
-     CpuGuess =1;
+     CpuGuess ='r';
   };
   if (comp == 2){
      vram_adr(NTADR_A(450,5));
      vram_write("Cpu chose Paper. ", 16);
-     CpuGuess = 2;
+     CpuGuess = 'p';
   };
   if (comp ==3){
      vram_adr(NTADR_A(450,5));
      vram_write("Cpu chose Scissors.", 20);
-     CpuGuess =3;
+     CpuGuess ='s';
   };
   
   // enable rendering
   ppu_on_all();
   // infinite loop
-  while(1) {
-    i=0;
+  while(1) {    
     pad = pad_trigger(i);
     
+      
       if(pad & PAD_LEFT){        
       	vram_adr(NTADR_A(2,9));
       	vram_write("You choose Rock!!   ",21);     
-        UserGuess = 1;
+        UserGuess = 'r';
         break;
        
       }      
       else if(pad & PAD_UP){
         vram_adr(NTADR_A(2,9));
       	vram_write("You choose Paper!!    ",21); 
-        UserGuess = 2;
+        UserGuess = 'p';
         break;
         
       } //else if  
       else if(pad & PAD_RIGHT){
       	vram_adr(NTADR_A(2,9));
       	vram_write("You choose Scissors!!",21); 
-        UserGuess = 3;
+        UserGuess = 's';
         break;
         
       }//else if        
@@ -185,11 +231,13 @@ int loop;
 void main(void) {
   setup_graphics();  
   title_screen();
-  
+  loop =0;
  
   while (1) 
   {      
-     guess();
+    
+     guess();  
+     
          
   } 
      
