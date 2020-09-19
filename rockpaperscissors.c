@@ -54,7 +54,7 @@ int index;
 char CpuGuess;
 char UserGuess;
 time_t t;
-
+int y = 0;
 
 void setup_graphics() {
   // clear sprites
@@ -171,29 +171,10 @@ void guess()
   vram_write("Right: Scissors",15);
   vram_adr(NTADR_A(6,22));	
   vram_write("                         ", 20); 
-  
-  comp = (rand()%(3-1))+1;
-  comp = (rand()%(3-1))+1;
-
-  if (comp ==1){
-     vram_adr(NTADR_A(450,5));
-     vram_write("Cpu chose Rock. ", 15);
-     CpuGuess ='r';
-  };
-  if (comp == 2){
-     vram_adr(NTADR_A(450,5));
-     vram_write("Cpu chose Paper. ", 16);
-     CpuGuess = 'p';
-  };
-  if (comp ==3){
-     vram_adr(NTADR_A(450,5));
-     vram_write("Cpu chose Scissors.", 20);
-     CpuGuess ='s';
-  };
-  
-  // enable rendering
   ppu_on_all();
-  // infinite loop
+  comp = (rand()%(3))+1;
+  comp = (rand()%(3))+1;
+  
   while(1) {    
     pad = pad_trigger(i);
     
@@ -220,7 +201,29 @@ void guess()
         
       }//else if        
   
-  }//while
+  }//while  
+  ppu_off();
+
+  if (comp ==1){
+     vram_adr(NTADR_A(450,5));
+     vram_write("Cpu chose Rock. ", 15);
+     CpuGuess ='r';
+  };
+  if (comp == 2){
+     vram_adr(NTADR_A(450,5));
+     vram_write("Cpu chose Paper. ", 16);
+     CpuGuess = 'p';
+  };
+  if (comp ==3){
+     vram_adr(NTADR_A(450,5));
+     vram_write("Cpu chose Scissors.", 20);
+     CpuGuess ='s';
+  };
+  
+  // enable rendering
+  ppu_on_all();
+  // infinite loop
+  
   
   check(UserGuess,CpuGuess);// delete to fix
   
